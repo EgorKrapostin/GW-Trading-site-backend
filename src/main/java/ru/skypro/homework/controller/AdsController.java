@@ -3,10 +3,10 @@ package ru.skypro.homework.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.dto.adsDto.AdsDto;
-import ru.skypro.homework.dto.adsDto.CreateAdsDto;
-import ru.skypro.homework.dto.adsDto.FullAdsDto;
-import ru.skypro.homework.dto.adsDto.ResponseWrapperAdsDto;
+import ru.skypro.homework.dto.ads.AdsDto;
+import ru.skypro.homework.dto.ads.CreateAdsDto;
+import ru.skypro.homework.dto.ads.FullAdsDto;
+import ru.skypro.homework.dto.ads.ResponseWrapperAdsDto;
 
 import java.util.ArrayList;
 

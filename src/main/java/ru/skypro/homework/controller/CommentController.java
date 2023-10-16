@@ -9,37 +9,37 @@ import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping("/ads")
+@CrossOrigin(value = "http://localhost:3000")
 @RequiredArgsConstructor
 public class CommentController {
-    private final CommentService commentService;
+//    private final CommentService commentService;
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<CommentsDTO> getComments(Authentication authentication,
-                                                   @PathVariable int id) {
-        return commentService.getComments(authentication, id);
+    public CommentsDTO getComments() {
+        CommentsDTO commentsList=new CommentsDTO(1, new ArrayList<>());
+        return commentsList;
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CreateOrUpdateCommentDTO> addComment(Authentication authentication,
-                                                 @PathVariable int id,
-                                                 @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return commentService.addComment(authentication, id, createOrUpdateCommentDTO);
+    public CreateOrUpdateCommentDTO addComment() {
+        CreateOrUpdateCommentDTO newComment=new CreateOrUpdateCommentDTO();
+        newComment.setText("Test1");
+        return newComment;
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> deleteComment(Authentication authentication,
-                                           @PathVariable int adId,
-                                           @PathVariable int commentId) {
-        return commentService.deleteComment(authentication, adId, commentId);
+    public CommentDTO deleteComment() {
+        return null;
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CreateOrUpdateCommentDTO> updateComment(Authentication authentication,
-                                           @PathVariable int adId,
-                                           @PathVariable int commentId,
-                                           @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return commentService.updateComment(authentication, adId, commentId, createOrUpdateCommentDTO);
+    public CreateOrUpdateCommentDTO updateComment() {
+        CreateOrUpdateCommentDTO modifyComment=new CreateOrUpdateCommentDTO();
+        modifyComment.setText("Test2");
+        return modifyComment;
     }
 }

@@ -50,7 +50,6 @@ public class AdsController {
 
     @GetMapping("/me")
     public ResponseWrapperAdsDto getAdsForMe(){
-
         return adService.getAllUserAdsDto();
     }
 

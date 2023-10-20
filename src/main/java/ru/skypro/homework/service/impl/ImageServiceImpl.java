@@ -29,67 +29,38 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Slf4j
 @Transactional
 public class ImageServiceImpl implements ImageService {
-    private final AdRepository adRepository;
+
     private final ImageRepository imageRepository;
-    private final UserRepository userRepository;
-    private final AuthServiceImpl userAuthentication;
 
-    @Value("${path.image}")
-    private String pathImage;
 
     @Override
-    public String uploadImage(MultipartFile image) throws IOException {
-        Users user = userAuthentication.getAuthUserName();
-
-        Path filePath = Path.of(pathImage + user.getUsername(),
-                "user_image.jpg");
-
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-
-        try (
-                InputStream is = image.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-            bis.transferTo(bos);
+    public Image createImage(MultipartFile image) {
+        Image newImage = new Image();
+        try {
+            newImage.setBytes(image.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return "/" + filePath.getParent().toString();
+
+        return imageRepository.saveAndFlush(newImage);
     }
 
 
     @Override
-    public String updateAdImage(String id, MultipartFile image) throws IOException {
-        Users user = userAuthentication.getAuthUserName();
+    public Image updateImage(MultipartFile newImage, Image image) {
 
-        Path filePath = Path.of(pathImage + user.getUsername()+ "/ad",
-                image.getOriginalFilename());
-
-        Files.createDirectories(filePath.getParent());
-        Files.deleteIfExists(filePath);
-
-        try (
-                InputStream is = image.getInputStream();
-                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
-        ) {
-            bis.transferTo(bos);
+        try {
+            image.setBytes(newImage.getBytes());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        return "/" + filePath.toString().replace("\\", "/");
+        return imageRepository.saveAndFlush(image);
     }
     @Override
-    public Image findAdImage(Integer adId) {
-        return adRepository.findById(adId)
-                .map(Ad::getImage)
-                .orElse(new Image());
-    }
-    @Override
-    public Image findUserImage(Integer userId) {
-        return userRepository.findById(userId)
-                .map(Users::getImage)
-                .orElse(new Image());
+    public byte[] getImage(String id) {
+        Image image = imageRepository.findById(id).orElseThrow();
+
+        return image.getBytes();
     }
 
 

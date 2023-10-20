@@ -10,4 +10,5 @@ public interface UserService {
     UserInfoDto getInfoAboutUser();
 
     UserInfoDto updateInfoAboutUser();
+
 }

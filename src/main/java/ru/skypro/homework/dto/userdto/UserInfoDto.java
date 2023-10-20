@@ -2,6 +2,8 @@ package ru.skypro.homework.dto.userdto;
 
 import lombok.Data;
 import ru.skypro.homework.dto.authdto.Role;
+import ru.skypro.homework.entity.Image;
+import ru.skypro.homework.entity.Users;
 
 @Data
 public class UserInfoDto {
@@ -18,5 +20,6 @@ public class UserInfoDto {
 
     private Role role;
 
-    private String image;
+    private Image image;
+
 }

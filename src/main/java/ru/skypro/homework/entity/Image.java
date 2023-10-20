@@ -12,8 +12,6 @@ public class Image {
     @Id
     private String id;
 
-    private String imageName;
-
     @Lob
     @Column(name = "image")
     @Type(type = "org.hibernate.type.BinaryType")

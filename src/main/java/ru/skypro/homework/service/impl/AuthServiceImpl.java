@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.authdto.Register;
+import ru.skypro.homework.entity.Users;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 
@@ -48,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
-    public User getAuthUserName() {
+    public Users getAuthUserName() {
         Authentication authenticationUser = SecurityContextHolder.getContext().getAuthentication();
         return userRepository.findByUsername(authenticationUser.getName());
     }

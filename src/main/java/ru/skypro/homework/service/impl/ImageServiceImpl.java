@@ -3,11 +3,13 @@ package ru.skypro.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.Image;
+import ru.skypro.homework.entity.Users;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.ImageRepository;
 import ru.skypro.homework.repository.UserRepository;
@@ -36,28 +38,12 @@ public class ImageServiceImpl implements ImageService {
     private String pathImage;
 
     @Override
-    public void updateUserImage(MultipartFile image) throws IOException {
-        User user = userAuthentication.getAuthUserName();
-        Path filePath = Path.of(pathImage, user + "." + (image.getName()));
-        imageStream(filePath, image);
+    public String uploadImage(MultipartFile image) throws IOException {
+        Users user = userAuthentication.getAuthUserName();
 
-        Image avatar = findUserImage(user.getId);
-        avatar.setImageName(image.getName());
-        avatar.setBytes(image.getBytes());
-        imageRepository.save(avatar);
+        Path filePath = Path.of(pathImage + user.getUsername(),
+                "user_image.jpg");
 
-        if (user.getImage() == null) {
-            user.setImage(avatar);
-            userRepository.save(user);
-        }
-    }
-
-    @Override
-    public byte[] updateAdImage(Integer id, MultipartFile image) throws IOException {
-        return new byte[0];
-    }
-
-    private void imageStream(Path filePath, MultipartFile image) throws IOException {
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 
@@ -69,16 +55,42 @@ public class ImageServiceImpl implements ImageService {
         ) {
             bis.transferTo(bos);
         }
+        return "/" + filePath.getParent().toString();
     }
-    private Image findAdImage(Integer ad) {
-        return adRepository.findById(ad)
+
+
+    @Override
+    public String updateAdImage(String id, MultipartFile image) throws IOException {
+        Users user = userAuthentication.getAuthUserName();
+
+        Path filePath = Path.of(pathImage + user.getUsername()+ "/ad",
+                image.getOriginalFilename());
+
+        Files.createDirectories(filePath.getParent());
+        Files.deleteIfExists(filePath);
+
+        try (
+                InputStream is = image.getInputStream();
+                OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
+                BufferedInputStream bis = new BufferedInputStream(is, 1024);
+                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+        ) {
+            bis.transferTo(bos);
+        }
+        return "/" + filePath.toString().replace("\\", "/");
+    }
+    @Override
+    public Image findAdImage(Integer adId) {
+        return adRepository.findById(adId)
                 .map(Ad::getImage)
                 .orElse(new Image());
     }
-
-    private Image findUserImage(int id) {
-        return userRepository.findById(id)
-                .map(User::getImage)
+    @Override
+    public Image findUserImage(Integer userId) {
+        return userRepository.findById(userId)
+                .map(Users::getImage)
                 .orElse(new Image());
     }
+
+
 }

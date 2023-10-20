@@ -1,10 +1,15 @@
 package ru.skypro.homework.service;
 
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.entity.Image;
 
+import java.io.File;
 import java.io.IOException;
 
 public interface ImageService {
-    void updateUserImage(MultipartFile image) throws IOException;
-    byte[] updateAdImage(Integer id, MultipartFile image) throws IOException;
+    String uploadImage(MultipartFile image) throws IOException;
+    String updateAdImage(String id, MultipartFile file) throws IOException;
+    Image findAdImage(Integer adId);
+    Image findUserImage(Integer userId);
 }

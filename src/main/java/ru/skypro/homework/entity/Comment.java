@@ -19,6 +19,7 @@ public class Comment {
     @JoinColumn(name = "author_id", nullable = false)
     private User author;
 
+
     @ManyToOne
     @JoinColumn(name = "ad_id", nullable = false)
     private Ad ad;

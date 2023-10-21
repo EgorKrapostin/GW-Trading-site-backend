@@ -11,4 +11,5 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment, Integer> {
 
     List<Comment> getCommentsByAd_Id(int id);
+
 }

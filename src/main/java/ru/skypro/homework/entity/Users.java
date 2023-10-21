@@ -1,6 +1,9 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
+
+
+import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.authdto.Role;
 
 import javax.persistence.*;
@@ -9,7 +12,9 @@ import java.util.*;
 @Data
 @Entity
 @Table(name = "userAuth")
-public class User {
+
+@NoArgsConstructor
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -47,8 +52,8 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Comment> commentsList = new ArrayList<>();
 
-    public User(int id, String email, String firstName, String lastName, String phone, Image image, String password,
-                String username, Role role) {
+    public Users(int id, String email, String firstName, String lastName, String phone, Image image, String password,
+                 String username, Role role) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -60,7 +65,7 @@ public class User {
         this.role = role;
     }
 
-    public User(String password, String username, Role role) {
+    public Users(String password, String username, Role role) {
         this.password = password;
         this.username = username;
         this.role = role;

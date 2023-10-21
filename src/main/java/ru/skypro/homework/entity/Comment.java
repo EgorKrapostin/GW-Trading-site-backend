@@ -5,26 +5,28 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 @Entity
-@Table(name = "comments")
+@Table(name = "comment")
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Integer pk;
-    @CreationTimestamp
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "comment_date")
-    private Date createdAt;
-    @Column (nullable = false)
-    private String text;
+    private int id;
+
     @ManyToOne
-    @JoinColumn(name = "ad_id", referencedColumnName = "id")
-    private Ad ad;
-    @ManyToOne
-    @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id")
+    @JoinColumn(name = "author_id", nullable = false)
     private User author;
+
+    @ManyToOne
+    @JoinColumn(name = "ad_id", nullable = false)
+    private Ad ad;
+
+    @CreationTimestamp
+    @Column(name = "comment_date", length = 20, nullable = false)
+    private LocalDateTime createdAt;
+
+    @Column(length = 1000, nullable = false)
+    private String text;
 }

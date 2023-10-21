@@ -16,7 +16,7 @@ public class CommentMapper {
         commentDTO.setAuthorImage(comment.getAuthor().getImage().getId());
         commentDTO.setAuthorFirstName(comment.getAuthor().getFirstName());
         commentDTO.setCreatedAt(comment.getCreatedAt());
-        commentDTO.setPk(comment.getPk());
+        commentDTO.setPk(comment.getId());
         commentDTO.setText(comment.getText());
         return commentDTO;
     }

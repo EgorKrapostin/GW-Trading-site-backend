@@ -14,13 +14,13 @@ import ru.skypro.homework.service.AuthService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
     private final UserDetailsManager manager;
     private final PasswordEncoder encoder;
 
-    public AuthServiceImpl(UserRepository userRepository, UserDetailsManager manager,
+    public AuthServiceImpl(UserDetailsManager manager,
                            PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+
         this.manager = manager;
         this.encoder = passwordEncoder;
     }
@@ -49,9 +49,9 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
-    public Users getAuthUserName() {
-        Authentication authenticationUser = SecurityContextHolder.getContext().getAuthentication();
-        return userRepository.findByUsername(authenticationUser.getName());
-    }
+//    public Users getAuthUserName() {
+//        Authentication authenticationUser = SecurityContextHolder.getContext().getAuthentication();
+//        return userRepository.findByUsername(authenticationUser.getName());
+//    }
 
 }

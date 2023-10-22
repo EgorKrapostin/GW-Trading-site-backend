@@ -17,7 +17,7 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private User author;
+    private Users author;
 
 
     @ManyToOne

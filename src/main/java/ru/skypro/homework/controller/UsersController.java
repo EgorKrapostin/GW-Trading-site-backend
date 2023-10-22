@@ -1,15 +1,18 @@
 package ru.skypro.homework.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
+import ru.skypro.homework.service.ImageService;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
 public class UsersController {
-
+   private final ImageService imageService;
 
     @PostMapping("/set_password")
     public void updatePassword(

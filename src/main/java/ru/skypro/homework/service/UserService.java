@@ -5,7 +5,7 @@ import ru.skypro.homework.dto.userdto.UserInfoDto;
 
 public interface UserService {
 
-    void updatePassword(NewPassDto newPassDto);
+    void updatePassword(String currentPassword, String newPassword, String username);
 
     UserInfoDto getInfoAboutUser();
 

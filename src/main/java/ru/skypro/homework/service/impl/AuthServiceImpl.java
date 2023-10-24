@@ -48,10 +48,4 @@ public class AuthServiceImpl implements AuthService {
                         .build());
         return true;
     }
-
-//    public Users getAuthUserName() {
-//        Authentication authenticationUser = SecurityContextHolder.getContext().getAuthentication();
-//        return userRepository.findByUsername(authenticationUser.getName());
-//    }
-
 }

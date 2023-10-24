@@ -8,9 +8,9 @@ public class CommentsDTO {
     private int count;
     private List<CommentDTO> results;
 
-    public CommentsDTO(int count, List<CommentDTO> results){
-        this.count = results.size();
-        this.results = results;
-    }
+//    public CommentsDTO(int count, List<CommentDTO> results){
+//        this.count = results.size();
+//        this.results = results;
+//    }
 }
 

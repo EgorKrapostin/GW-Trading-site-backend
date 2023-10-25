@@ -13,4 +13,5 @@ public interface UserService {
     Optional<UserInfoDto> getInfoAboutUser(String email);
 
     UserUpdateDto updateInfoAboutUser(UserUpdateDto userUpdateDto,String email);
+
 }

@@ -20,36 +20,29 @@ public class CommentController {
     @GetMapping("/{id}/comments")
     public CommentsDTO getComments(Authentication authentication,
                                                    @PathVariable int id) {
-        CommentsDTO comments = commentService.getComments(authentication, id);
-        return comments;
+        return commentService.getComments(id);
     }
 
     @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDTO> addComment(Authentication authentication,
+    public CommentDTO addComment(Authentication authentication,
                                                  @PathVariable int id,
                                                  @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        CommentDTO comment = commentService.addComment(authentication, id, createOrUpdateCommentDTO);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(comment);
+        return commentService.addComment(id, createOrUpdateCommentDTO);
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
     public ResponseEntity<CommentDTO> deleteComment(Authentication authentication,
                                                     @PathVariable int adId,
                                                     @PathVariable int commentId) {
-        commentService.deleteComment(authentication, adId, commentId);
+        commentService.deleteComment(adId, commentId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> updateComment(Authentication authentication,
+    public CommentDTO updateComment(Authentication authentication,
                                                     @PathVariable int adId,
                                                     @PathVariable int commentId,
                                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        CommentDTO comment = commentService.updateComment(authentication, adId, commentId, createOrUpdateCommentDTO);
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(comment);
+        return commentService.updateComment(adId, commentId, createOrUpdateCommentDTO);
     }
 }

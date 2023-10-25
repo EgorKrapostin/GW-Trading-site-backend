@@ -17,7 +17,7 @@ import java.util.*;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "user_id",nullable = false)
     private int id;
 
     @Column(nullable = false, length = 32)
@@ -32,7 +32,7 @@ public class Users {
     @Column(nullable = false, length = 16)
     private String phone;
 
-    @Column(nullable = false, length = 64)
+    @Column(name = "pass", nullable = false, length = 64)
     private String password;
 
     @Column(nullable = false, length = 32)
@@ -42,7 +42,7 @@ public class Users {
     @JoinColumn(name = "image_id")
     private Image image;
 
-    @Column(length = 5, nullable = false)
+    @Column(name = "user_role", length = 5, nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 

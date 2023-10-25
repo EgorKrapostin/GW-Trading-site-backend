@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Data
 public class Image {
     @Id
+    @Column(name = "image_id")
     private String id;
 
     @Lob

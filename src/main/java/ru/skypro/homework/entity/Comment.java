@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private int id;
 
     @ManyToOne
@@ -28,6 +28,6 @@ public class Comment {
     @Column(name = "comment_date", length = 20, nullable = false)
     private LocalDateTime createdAt;
 
-    @Column(length = 1000, nullable = false)
+    @Column(name = "comment_text", length = 1000, nullable = false)
     private String text;
 }

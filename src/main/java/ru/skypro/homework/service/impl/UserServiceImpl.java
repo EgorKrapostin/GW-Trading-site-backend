@@ -1,13 +1,15 @@
 package ru.skypro.homework.service.impl;
 
-import org.apache.catalina.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.dto.userdto.UserUpdateDto;
-import ru.skypro.homework.entity.Users;
+import ru.skypro.homework.entity.User;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
@@ -15,7 +17,7 @@ import ru.skypro.homework.service.mapper.UserMapper;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -31,23 +33,42 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updatePassword(NewPassDto newPassDto) {
     }
-
     @Override
-    public Optional<UserInfoDto> getInfoAboutUser(String email) {
-        return Optional.ofNullable(
-                userMapper.fromUser(userRepository.findUserByEmail(email)));
-
+    public Optional<User> findAuthUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentPrincipalName = authentication.getName();
+        return userRepository.findUserByEmail(currentPrincipalName);
     }
 
     @Override
-    public UserUpdateDto updateInfoAboutUser(UserUpdateDto userUpdateDto,String email) {
+    public UserInfoDto getInfoAboutUser() {
+        Optional<User> currentUser = findAuthUser();
+        UserInfoDto currentUserDto = new UserInfoDto();
+        if (currentUser.isPresent()) {
+            currentUserDto = userMapper.fromUser(currentUser.get());
+        }
+        return currentUserDto;
+    }
 
-        Users user = userRepository.findUserByEmail(email);
-        user.setFirstName(userUpdateDto.getFirtsName());
-        user.setLastName(userUpdateDto.getLastName());
-        user.setPhone(userUpdateDto.getPhone());
+    @Override
+    public UserInfoDto updateInfoAboutUser(UserInfoDto userInfoDto) {
+        Optional<User> currentUser = findAuthUser();
+        User user = new User();
+        if(currentUser.isPresent()){
+            user = currentUser.get();
+            user.setFirstName(userInfoDto.getFirstName());
+            user.setLastName(userInfoDto.getLastName());
+            user.setPhone(userInfoDto.getPhone());
+            userRepository.save(user);
+        }
 
-        userRepository.save(user);
-        return userUpdateDto;
+        return userMapper.fromUser(user);
+    }
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findUserByEmail(username).orElseThrow(() ->
+                new UsernameNotFoundException("User with username " + username + " doesn't exists"));
     }
 }

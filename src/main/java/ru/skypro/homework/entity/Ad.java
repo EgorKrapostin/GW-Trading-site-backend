@@ -16,7 +16,7 @@ public class Ad {
 
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
-    private Users author;
+    private User author;
 
     @OneToOne
     @JoinColumn(name = "image_id")

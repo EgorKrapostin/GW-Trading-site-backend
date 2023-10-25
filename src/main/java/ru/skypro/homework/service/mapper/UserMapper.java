@@ -1,8 +1,10 @@
 package ru.skypro.homework.service.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.entity.Users;
 
+@Component
 public class UserMapper {
 
     public UserInfoDto fromUser(Users users) {

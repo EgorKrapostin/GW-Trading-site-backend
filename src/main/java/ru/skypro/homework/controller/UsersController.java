@@ -7,6 +7,7 @@ import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 
 import ru.skypro.homework.dto.userdto.UserUpdateDto;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
 import java.util.Optional;
@@ -17,13 +18,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
 public class UsersController {
-   private final ImageService imageService;
+    private final ImageService imageService;
 
     private final UserService userService;
 
-    public UsersController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PostMapping("/set_password")
     public void updatePassword(

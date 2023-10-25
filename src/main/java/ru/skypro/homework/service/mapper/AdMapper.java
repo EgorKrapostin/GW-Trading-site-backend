@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.mapper;
 
 import org.springframework.stereotype.Component;
+
 import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
 import ru.skypro.homework.dto.ads.FullAdsDto;

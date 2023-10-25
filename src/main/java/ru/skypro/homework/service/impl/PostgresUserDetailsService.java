@@ -7,13 +7,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ru.skypro.homework.entity.Users;
 import ru.skypro.homework.repository.UserRepository;
 
 import java.util.Arrays;
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class PostgresUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
@@ -23,7 +24,9 @@ public class PostgresUserDetailsService implements UserDetailsService {
         if (users == null) {
             throw new UsernameNotFoundException("User not found!");
         }
-        List<SimpleGrantedAuthority> authorityList = Arrays.asList(new SimpleGrantedAuthority("users"));
+        List<SimpleGrantedAuthority> authorityList = List.of(
+                new SimpleGrantedAuthority("users"),
+                new SimpleGrantedAuthority("admin"));
 
         return new User(users.getUsername(), users.getPassword(), authorityList);
     }

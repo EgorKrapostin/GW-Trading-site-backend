@@ -49,4 +49,15 @@ public class UserServiceImpl implements UserService {
     public UserInfoDto updateInfoAboutUser() {
         return new UserInfoDto();
     }
+
+    @Override
+    public void createUser(PostgresUserDetailsService myDatabaseUserDetails) {
+
+    }
+
+    @Override
+    @Transactional
+    public boolean userExists(String username) {
+        return userRepository.findByUsername(username) != null;
+    }
 }

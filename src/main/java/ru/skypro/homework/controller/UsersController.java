@@ -8,19 +8,9 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 
-import ru.skypro.homework.dto.userdto.UserUpdateDto;
-import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.entity.User;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Optional;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController

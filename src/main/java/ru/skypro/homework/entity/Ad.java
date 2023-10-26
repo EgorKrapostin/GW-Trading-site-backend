@@ -1,6 +1,6 @@
 package ru.skypro.homework.entity;
 
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

@@ -5,6 +5,8 @@ import ru.skypro.homework.dto.authdto.Register;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.entity.User;
 
+import java.util.Optional;
+
 @Component
 public class UserMapper {
 
@@ -16,7 +18,8 @@ public class UserMapper {
         userInfoDto.setFirstName(users.getFirstName());
         userInfoDto.setLastName(users.getLastName());
         userInfoDto.setPhone(users.getPhone());
-        userInfoDto.setImage(users.getImage());
+        Optional.ofNullable(users.getImage()).ifPresent(image -> userInfoDto.setImage(
+                "/users/" + users.getImage().getId() + "/image"));
 
         return userInfoDto;
     }
@@ -28,7 +31,7 @@ public class UserMapper {
         users.setFirstName(userInfoDto.getFirstName());
         users.setLastName(userInfoDto.getLastName());
         users.setPhone(userInfoDto.getPhone());
-        users.setImage(userInfoDto.getImage());
+        users.getImage().setId(userInfoDto.getImage());
 
         return users;
     }

@@ -21,6 +21,6 @@ public class UserInfoDto {
 
     private String phone;
 
-    private Image image;
+    private String image;
 
 }

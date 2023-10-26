@@ -1,11 +1,18 @@
 package ru.skypro.homework.entity;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-@Data
+import java.util.Objects;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Ad")
 public class Ad {
@@ -34,4 +41,34 @@ public class Ad {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    public Ad(int id, User author, String title, String description, Image image, int price) {
+        this.id = id;
+        this.author = author;
+        this.title = title;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Ad ad = (Ad) o;
+        if (id != 0) {
+            return id == ad.id;
+        } else {
+            return price == ad.price && Objects.equals(author, ad.author) && Objects.equals(title, ad.title)
+                    && Objects.equals(description, ad.description) && Objects.equals(image, ad.image)
+                    && Objects.equals(comments, ad.comments);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        if (id != 0) {
+            return Objects.hash(id);
+        } else {
+            return Objects.hash(author, title, description, image, price, comments);
+        }
+    }
 }

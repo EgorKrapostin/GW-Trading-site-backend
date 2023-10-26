@@ -10,6 +10,7 @@ import ru.skypro.homework.service.ImageService;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -24,11 +25,12 @@ public class ImageServiceImpl implements ImageService {
     public Image createImage(MultipartFile image) {
         Image newImage = new Image();
         try {
-            newImage.setBytes(image.getBytes());
+            byte[] bytes = image.getBytes();
+            newImage.setBytes(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+        newImage.setId(UUID.randomUUID().toString());
         return imageRepository.saveAndFlush(newImage);
     }
 

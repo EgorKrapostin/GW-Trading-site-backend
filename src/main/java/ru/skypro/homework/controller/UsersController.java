@@ -1,6 +1,7 @@
 package ru.skypro.homework.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -8,10 +9,17 @@ import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 
 import ru.skypro.homework.dto.userdto.UserUpdateDto;
+import ru.skypro.homework.entity.Image;
+import ru.skypro.homework.entity.User;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Optional;
 
 @CrossOrigin(value = "http://localhost:3000")
@@ -42,8 +50,14 @@ public class UsersController {
     }
 
     @PatchMapping("/me/image")
-  public byte[] updateUserImage(
+    public ResponseEntity<byte[]> updateUserImage(
             @RequestPart MultipartFile image) {
-        return null;
+        userService.updateUserImage(image);
+        return ResponseEntity.ok().build();
+    }
+    @GetMapping(value = "/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getImage(@PathVariable("id") String id) {
+        User user = userService.findAuthUser().orElseThrow();
+        return imageService.getImage(user.getImage().getId());
     }
 }

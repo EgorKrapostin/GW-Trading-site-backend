@@ -1,7 +1,7 @@
 package ru.skypro.homework.controller;
 
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,10 +9,8 @@ import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
 import ru.skypro.homework.dto.ads.FullAdsDto;
 import ru.skypro.homework.dto.ads.ResponseWrapperAdsDto;
-import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.service.AdService;
-
-import java.util.ArrayList;
+import ru.skypro.homework.service.ImageService;
 
 @RestController
 @RequestMapping("/ads")
@@ -20,6 +18,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class AdsController {
     private final AdService adService;
+    private final ImageService imageService;
 
     @GetMapping()
     public ResponseWrapperAdsDto getAllAds(){
@@ -27,9 +26,9 @@ public class AdsController {
     }
 
     @PostMapping()
-    public AdsDto addAds(@RequestPart CreateAdsDto ads,
-                         @RequestPart MultipartFile image){
-        return adService.createAds(ads, image);
+    public ResponseEntity<AdsDto> addAds(@RequestPart CreateAdsDto ads,
+                                         @RequestPart MultipartFile image){
+        return ResponseEntity.ok(adService.createAds(ads, image));
     }
 
     @GetMapping("/{id}")
@@ -57,6 +56,10 @@ public class AdsController {
     public void updateImage(@PathVariable Integer id,
                             @RequestPart MultipartFile image){
         adService.updateImageAdDto(id, image);
+    }
+    @GetMapping(value = "/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getImage(@PathVariable("id") String id) {
+        return imageService.getImage(id);
     }
 }
 

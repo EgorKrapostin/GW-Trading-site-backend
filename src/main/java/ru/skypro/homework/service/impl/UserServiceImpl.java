@@ -1,34 +1,36 @@
 package ru.skypro.homework.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.dto.userdto.UserUpdateDto;
+import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.repository.UserRepository;
+import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
+    private final ImageService imageService;
 
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-    }
+
 
     @Override
     public void updatePassword(NewPassDto newPassDto) {
@@ -38,6 +40,20 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         return userRepository.findUserByEmail(currentPrincipalName);
+    }
+
+    @Override
+    public void updateUserImage(MultipartFile image) {
+        User user = findAuthUser().orElseThrow();
+        Image oldImage = user.getImage();
+        if (oldImage == null) {
+            Image newImage = imageService.createImage(image);
+            user.setImage(newImage);
+        } else {
+            Image updatedImage = imageService.updateImage(image, oldImage);
+            user.setImage(updatedImage);
+        }
+        userRepository.save(user);
     }
 
     @Override

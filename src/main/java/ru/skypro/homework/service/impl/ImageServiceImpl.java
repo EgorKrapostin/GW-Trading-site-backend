@@ -39,7 +39,8 @@ public class ImageServiceImpl implements ImageService {
     public Image updateImage(MultipartFile newImage, Image image) {
 
         try {
-            image.setBytes(newImage.getBytes());
+            byte[] bytes = newImage.getBytes();
+            image.setBytes(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

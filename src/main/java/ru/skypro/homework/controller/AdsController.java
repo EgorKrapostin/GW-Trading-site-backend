@@ -21,18 +21,18 @@ public class AdsController {
     private final ImageService imageService;
 
     @GetMapping()
-    public ResponseWrapperAdsDto getAllAds(){
-       return adService.getAllAdsDto();
+    public ResponseWrapperAdsDto getAllAds() {
+        return adService.getAllAdsDto();
     }
 
     @PostMapping()
-    public ResponseEntity<AdsDto> addAds(@RequestPart CreateAdsDto ads,
-                                         @RequestPart MultipartFile image){
-        return ResponseEntity.ok(adService.createAds(ads, image));
+    public AdsDto addAds(@RequestPart CreateAdsDto ads,
+                         @RequestPart MultipartFile image) {
+        return adService.createAds(ads, image);
     }
 
     @GetMapping("/{id}")
-    public FullAdsDto getAds(@PathVariable Integer id){
+    public FullAdsDto getAds(@PathVariable Integer id) {
         return adService.getFullAdDto(id);
     }
 
@@ -43,23 +43,25 @@ public class AdsController {
 
     @PatchMapping("/{id}")
     public AdsDto updateAds(@PathVariable Integer id,
-                            @RequestPart CreateAdsDto adsDto){
+                            @RequestPart CreateAdsDto adsDto) {
         return adService.updateAdDto(id, adsDto);
     }
 
     @GetMapping("/me")
-    public ResponseWrapperAdsDto getAdsForMe(){
+    public ResponseWrapperAdsDto getAdsForMe() {
         return adService.getAllUserAdsDto();
     }
 
     @PatchMapping("/{id}/image")
     public void updateImage(@PathVariable Integer id,
-                            @RequestPart MultipartFile image){
+                            @RequestPart MultipartFile image) {
         adService.updateImageAdDto(id, image);
     }
+
     @GetMapping(value = "/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImage(@PathVariable("id") String id) {
         return imageService.getImage(id);
     }
+
 }
 

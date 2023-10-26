@@ -10,23 +10,25 @@ import ru.skypro.homework.dto.comment.CommentDTO;
 import ru.skypro.homework.dto.comment.CommentsDTO;
 import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.ImageService;
 
 @RestController("/ads")
 @RequiredArgsConstructor
 @CrossOrigin(value = "http://localhost:3000")
 public class CommentController {
     private final CommentService commentService;
+    private final ImageService imageService;
 
     @GetMapping("/{id}/comments")
     public CommentsDTO getComments(Authentication authentication,
-                                                   @PathVariable int id) {
+                                   @PathVariable int id) {
         return commentService.getComments(id);
     }
 
     @PostMapping("/{id}/comments")
     public CommentDTO addComment(Authentication authentication,
-                                                 @PathVariable int id,
-                                                 @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+                                 @PathVariable int id,
+                                 @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return commentService.addComment(id, createOrUpdateCommentDTO);
     }
 
@@ -40,9 +42,14 @@ public class CommentController {
 
     @PatchMapping("/{adId}/comments/{commentId}")
     public CommentDTO updateComment(Authentication authentication,
-                                                    @PathVariable int adId,
-                                                    @PathVariable int commentId,
-                                                    @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
+                                    @PathVariable int adId,
+                                    @PathVariable int commentId,
+                                    @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return commentService.updateComment(adId, commentId, createOrUpdateCommentDTO);
+    }
+
+    @GetMapping(value = "/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getImage(@PathVariable("id") String id) {
+        return imageService.getImage(id);
     }
 }

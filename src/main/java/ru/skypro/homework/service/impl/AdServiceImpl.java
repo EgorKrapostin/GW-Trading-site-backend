@@ -3,7 +3,6 @@ package ru.skypro.homework.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import ru.skypro.homework.config.WebSecurityConfig;
 import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
 import ru.skypro.homework.dto.ads.FullAdsDto;
@@ -19,7 +18,6 @@ import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.AdMapper;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -38,8 +36,8 @@ public class AdServiceImpl implements AdService {
     }
 
     @Override
-    public AdsDto createAds(CreateAdsDto adsDto, MultipartFile image) {
-        Ad newAd = adMapper.mapCreatedAdsDtoToAd(adsDto);
+    public AdsDto createAds(CreateAdsDto adDto, MultipartFile image) {
+        Ad newAd = adMapper.mapCreatedAdsDtoToAd(adDto);
         newAd.setAuthor(userService.findAuthUser().orElseThrow());
         Image newImage = imageService.createImage(image);
         newAd.setImage(newImage);

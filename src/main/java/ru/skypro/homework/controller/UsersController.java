@@ -57,7 +57,6 @@ public class UsersController {
     }
     @GetMapping(value = "/{id}/image", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getImage(@PathVariable("id") String id) {
-        User user = userService.findAuthUser().orElseThrow();
-        return imageService.getImage(user.getImage().getId());
+        return imageService.getImage(id);
     }
 }

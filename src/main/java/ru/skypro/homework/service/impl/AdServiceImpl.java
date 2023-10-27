@@ -2,6 +2,7 @@ package ru.skypro.homework.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
@@ -11,6 +12,7 @@ import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.exeption.AdNotFoundException;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.ImageService;
@@ -22,6 +24,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdServiceImpl implements AdService {
     private final AdMapper adMapper;
@@ -57,7 +60,7 @@ public class AdServiceImpl implements AdService {
             adRepository.deleteById(id);
             return true;
         }
-        throw new NullPointerException();
+        throw new AdNotFoundException();
         //  throw new NotFornidden(); дописать ошибку
     }
 
@@ -71,7 +74,7 @@ public class AdServiceImpl implements AdService {
             return adMapper.mapAdToAdDto(adRepository.save(ad));
         }
         //тут нужен эксэпшн
-        throw new NullPointerException();
+        throw new AdNotFoundException();
     }
 
     @Override

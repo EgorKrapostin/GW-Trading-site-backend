@@ -71,7 +71,8 @@ public class AdServiceImpl implements AdService {
             ad.setTitle(createAdsDto.getTitle());
             ad.setPrice(createAdsDto.getPrice());
             ad.setDescription(createAdsDto.getDescription());
-            return adMapper.mapAdToAdDto(adRepository.save(ad));
+            adRepository.save(ad);
+            return adMapper.mapAdToAdDto(ad);
         }
         //тут нужен эксэпшн
         throw new AdNotFoundException();
@@ -99,10 +100,9 @@ public class AdServiceImpl implements AdService {
     public boolean checkAccess(Integer id) {
         Role role = Role.ADMIN;
         Ad ad = adRepository.findById(id).orElseThrow();
-        Optional<User> user = userService.findAuthUser();
-        User user1 = user.get();
-        String curName = user1.getUsername();
+        User user = userService.findAuthUser().orElseThrow();
+        String curName = user.getUsername();
         return ad.getAuthor().getUsername().equals(curName)
-                || user1.getAuthorities().contains(role);
+                || user.getAuthorities().contains(role);
     }
 }

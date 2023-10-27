@@ -49,7 +49,7 @@ public class AdsController {
 
     @PatchMapping("/{id}")
     public AdsDto updateAds(@PathVariable Integer id,
-                            @RequestPart CreateAdsDto adsDto) {
+                            @RequestBody CreateAdsDto adsDto) {
         return adService.updateAdDto(id, adsDto);
     }
 

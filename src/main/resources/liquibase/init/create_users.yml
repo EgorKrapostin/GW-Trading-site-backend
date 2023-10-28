@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: dev
+      changes:
+        - createTable:
+            tableName: users_auth
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: email
+                  type: varchar(32)
+              - column:
+                  name: first_name
+                  type: varchar(32)
+              - column:
+                  name: last_name
+                  type: varchar(32)
+              - column:
+                  name: password
+                  type: varchar(64)
+              - column:
+                  name: phone
+                  type: varchar(16)
+              - column:
+                  name: role
+                  type: varchar(5)
+              - column:
+                  name: username
+                  type: varchar(32)
+              - column:
+                  name: image_id
+                  type: varchar(255)
+                  constraints:
+                    foreignKeyName: fk_key_image
+                    references: image(id)

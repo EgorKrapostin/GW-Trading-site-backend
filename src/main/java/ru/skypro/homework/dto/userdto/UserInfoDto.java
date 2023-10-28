@@ -23,4 +23,6 @@ public class UserInfoDto {
 
     private String image;
 
+    private Role role;
+
 }

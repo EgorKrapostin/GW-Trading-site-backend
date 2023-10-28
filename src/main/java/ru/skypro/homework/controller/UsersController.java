@@ -18,14 +18,14 @@ import ru.skypro.homework.service.UserService;
 @RequiredArgsConstructor
 public class UsersController {
     private final ImageService imageService;
-    private final AuthService authService;
     private final UserService userService;
+    private final AuthService authService;
 
 
     @PostMapping("/set_password")
     public void updatePassword(
             @RequestBody NewPassDto newPassDto) {
-
+        authService.updatePassword(newPassDto);
     }
 
     @GetMapping("/me")

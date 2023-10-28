@@ -20,6 +20,7 @@ public class UserMapper {
         userInfoDto.setPhone(users.getPhone());
         Optional.ofNullable(users.getImage()).ifPresent(image -> userInfoDto.setImage(
                 "/users/" + users.getImage().getId() + "/image"));
+        userInfoDto.setRole(users.getRole());
 
         return userInfoDto;
     }
@@ -32,6 +33,7 @@ public class UserMapper {
         users.setLastName(userInfoDto.getLastName());
         users.setPhone(userInfoDto.getPhone());
         users.getImage().setId(userInfoDto.getImage());
+        users.setRole(userInfoDto.getRole());
 
         return users;
     }

@@ -31,10 +31,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 
 
-
-    @Override
-    public void updatePassword(NewPassDto newPassDto) {
-    }
     @Override
     public Optional<User> findAuthUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

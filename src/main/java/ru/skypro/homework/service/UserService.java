@@ -11,8 +11,6 @@ import java.util.Optional;
 
 public interface UserService {
 
-    void updatePassword(NewPassDto newPassDto);
-
     UserInfoDto getInfoAboutUser();
 
     UserInfoDto updateInfoAboutUser(UserInfoDto userInfoDto);

@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: nikolay
+      changes:
+        - createTable:
+             tableName: image
+             columns:
+              - column:
+                name: id
+                type: varchar(255)
+                autoIncrement: true
+                constraints:
+                primaryKey: true
+              - column:
+                name: image
+                type: binary

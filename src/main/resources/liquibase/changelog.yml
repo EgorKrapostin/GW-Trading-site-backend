@@ -1,5 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: liquibase/init/create_ad.yml
-  - include:
-      file: liquibase/init/create_users.yml

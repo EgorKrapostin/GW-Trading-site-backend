@@ -16,6 +16,7 @@ import ru.skypro.homework.dto.comment.CreateOrUpdateCommentDTO;
 import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.ImageService;
+import ru.skypro.homework.service.impl.UserServiceImpl;
 
 @RestController
 @RequestMapping("/ads")
@@ -33,7 +34,7 @@ public class AdsController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public AdsDto addAd(@RequestPart CreateAdsDto properties,
-                         @RequestPart MultipartFile image) {
+                        @RequestPart MultipartFile image) {
         return adService.createAds(properties, image);
     }
 
@@ -66,29 +67,25 @@ public class AdsController {
 
     //COMMENTS
     @GetMapping("/{id}/comments")
-    public CommentsDTO getComments(Authentication authentication,
-                                   @PathVariable int id) {
-        return commentService.getComments(id);
+    public CommentsDTO getComments(@PathVariable("id") int adId) {
+        return commentService.getComments(adId);
     }
 
     @PostMapping("/{id}/comments")
-    public CommentDTO addComment(Authentication authentication,
-                                 @PathVariable int id,
+    public CommentDTO addComment(@PathVariable("id") int adId,
                                  @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
-        return commentService.addComment(id, createOrUpdateCommentDTO);
+        return commentService.addComment(adId, createOrUpdateCommentDTO);
     }
 
     @DeleteMapping("/{adId}/comments/{commentId}")
-    public ResponseEntity<CommentDTO> deleteComment(Authentication authentication,
-                                                    @PathVariable int adId,
+    public ResponseEntity<CommentDTO> deleteComment(@PathVariable int adId,
                                                     @PathVariable int commentId) {
         commentService.deleteComment(adId, commentId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{adId}/comments/{commentId}")
-    public CommentDTO updateComment(Authentication authentication,
-                                    @PathVariable int adId,
+    public CommentDTO updateComment(@PathVariable int adId,
                                     @PathVariable int commentId,
                                     @RequestBody CreateOrUpdateCommentDTO createOrUpdateCommentDTO) {
         return commentService.updateComment(adId, commentId, createOrUpdateCommentDTO);

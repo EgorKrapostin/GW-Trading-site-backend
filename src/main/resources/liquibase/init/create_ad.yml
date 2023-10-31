@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: ad
             columns:
               - column:
-                  name: id
+                  name: ad_id
                   type: int
                   autoIncrement: true
                   constraints:
@@ -25,11 +25,11 @@ databaseChangeLog:
                   name: author_id
                   type: int
                   constraints:
-                    foreignKeyName: fk_key_user
-                    references: users_auth(id)
+                    foreignKeyName: user_id
+                    references: user_auth(user_id)
               - column:
                   name: image_id
                   type: varchar(255)
                   constraints:
-                    foreignKeyName: fk_key_image
-                    references: image(id)
+                    foreignKeyName: image_id
+                    references: image(image_id)

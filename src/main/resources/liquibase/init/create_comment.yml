@@ -7,7 +7,7 @@ databaseChangeLog:
             tableName: comment
             columns:
               - column:
-                  name: id
+                  name: comment_id
                   type: int
                   autoIncrement: true
                   constraints:
@@ -15,21 +15,22 @@ databaseChangeLog:
               - column:
                   name: comment_date
                   type: timestamp
+                  constraints:
+                    nullable: false
               - column:
                   name: text
                   type: varchar(1000)
-              - column:
-                  name: title
-                  type: varchar(255)
+                  constraints:
+                    nullable: false
               - column:
                   name: author_id
                   type: int
                   constraints:
-                    foreignKeyName: fk_key_user
-                    references: users_auth(id)
+                    foreignKeyName: user_id
+                    references: user_auth(user_id)
               - column:
                   name: ad_id
                   type: int
                   constraints:
-                    foreignKeyName: fk_key_ad
-                    references: ad(id)
+                    foreignKeyName: ad_id
+                    references: ad(ad_id)

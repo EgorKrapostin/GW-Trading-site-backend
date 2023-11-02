@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "comment_id", nullable = false)
     private int id;
 
     @ManyToOne

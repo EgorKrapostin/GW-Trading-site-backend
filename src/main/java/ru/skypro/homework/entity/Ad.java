@@ -14,11 +14,11 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "Ad")
+@Table(name = "ad")
 public class Ad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "ad_id", nullable = false)
     private int id;
 
     @ManyToOne

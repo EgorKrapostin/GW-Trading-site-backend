@@ -17,11 +17,11 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "userAuth")
+@Table(name = "user_auth")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private int id;
 
     @Column(nullable = false, length = 32)

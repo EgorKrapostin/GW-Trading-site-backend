@@ -20,9 +20,19 @@
 
   <properties>
     <java.version>11</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <testcontainers.version>1.18.3</testcontainers.version>
   </properties>
 
   <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-dependencies</artifactId>
+      <version>3.1.5</version>
+      <scope>import</scope>
+      <type>pom</type>
+    </dependency>
     <!--suppress VulnerableLibrariesLocal -->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -41,12 +51,6 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-security</artifactId>
     </dependency>
-    <!--suppress VulnerableLibrariesLocal -->
-    <dependency>
-      <groupId>com.h2database</groupId>
-      <artifactId>h2</artifactId>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -63,20 +67,32 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>1.18.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>1.18.3</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct</artifactId>
       <version>1.5.5.Final</version>
     </dependency>
-
+    <!-- https://mvnrepository.com/artifact/org.liquibase/liquibase-core -->
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
     <dependency>
       <groupId>org.mapstruct</groupId>
       <artifactId>mapstruct-processor</artifactId>
       <version>1.5.5.Final</version>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>org.liquibase</groupId>-->
-<!--      <artifactId>liquibase-core</artifactId>-->
-<!--    </dependency>-->
   </dependencies>
 
   <build>

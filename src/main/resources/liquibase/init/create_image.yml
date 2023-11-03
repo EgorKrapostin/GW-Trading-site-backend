@@ -4,14 +4,13 @@ databaseChangeLog:
       author: nikolay
       changes:
         - createTable:
-             tableName: image
-             columns:
+            tableName: image
+            columns:
               - column:
-                name: id
-                type: varchar(255)
-                autoIncrement: true
-                constraints:
-                primaryKey: true
+                  name: id
+                  type: varchar(255)
+                  constraints:
+                    primaryKey: true
               - column:
-                name: image
-                type: binary
+                  name: image
+                  type: binary

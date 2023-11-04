@@ -8,7 +8,9 @@ import ru.skypro.homework.entity.Comment;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
+/**
+ * A class for converting a comment-entity to dto and back
+ */
 @Component
 public class CommentMapper {
     public CommentDTO commentToDTO(Comment comment) {

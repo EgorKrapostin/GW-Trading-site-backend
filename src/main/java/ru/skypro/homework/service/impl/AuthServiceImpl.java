@@ -8,11 +8,15 @@ import ru.skypro.homework.dto.authdto.Register;
 import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.entity.User;
+import ru.skypro.homework.exeption.AuthorizationException;
+import ru.skypro.homework.exeption.UserNotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
-
+/**
+ * class for registration, authorization of password changes
+ */
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -44,12 +48,14 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void updatePassword(NewPassDto newPassDto) {
-        User user = userService.findAuthUser().orElseThrow();
+        User user = userService.findAuthUser().orElseThrow(/*UserNotFoundException::new*/);
         boolean pass = encoder.matches(newPassDto.getCurrentPassword(), user.getPassword());
         if(pass){
            user.setPassword(encoder.encode(newPassDto.getNewPassword()));
            userRepository.save(user);
-        }
+        } /*else {
+            throw new AuthorizationException();
+        }*/
     }
 
 }

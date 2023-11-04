@@ -6,7 +6,9 @@ import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.entity.User;
 
 import java.util.Optional;
-
+/**
+ * A class for converting a user-entity to dto and back
+ */
 @Component
 public class UserMapper {
 

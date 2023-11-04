@@ -4,7 +4,9 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.Date;
-
+/**
+ * Wrapper class for receiving all information of comments
+ */
 @Data
 public class CommentDTO {
     private int author;

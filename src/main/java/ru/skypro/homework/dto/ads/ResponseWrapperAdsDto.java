@@ -3,7 +3,9 @@ package ru.skypro.homework.dto.ads;
 import lombok.Data;
 
 import java.util.Collection;
-
+/**
+ * Wrapper class for getting the list of ads
+ */
 @Data
 public class ResponseWrapperAdsDto {
     private int count;

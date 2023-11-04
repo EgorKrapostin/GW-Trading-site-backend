@@ -10,7 +10,9 @@ import ru.skypro.homework.entity.Ad;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+/**
+ * A class for converting an ad-entity to dto and back
+ */
 @Component
 public class AdMapper {
 

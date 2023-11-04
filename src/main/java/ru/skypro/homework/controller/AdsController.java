@@ -17,7 +17,9 @@ import ru.skypro.homework.service.AdService;
 import ru.skypro.homework.service.CommentService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.impl.UserServiceImpl;
-
+/**Controller class for launching endpoints for creating,
+ modifying, deleting an ad and comment
+ */
 @RestController
 @RequestMapping("/ads")
 @CrossOrigin(value = "http://localhost:3000")

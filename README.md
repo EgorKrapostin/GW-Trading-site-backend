@@ -28,7 +28,7 @@
 
 ## Проект разработали: 
 
-- https://github.com/KopylovVitaliy
-- https://github.com/NataDon17
-- https://github.com/EgorKrapostin
-- https://github.com/SeydalievNikolay
+- https://github.com/KopylovVitaliy - Копылов Виталий
+- https://github.com/NataDon17 - Донская Наталья
+- https://github.com/EgorKrapostin - Крапостин Егор
+- https://github.com/SeydalievNikolay - Сейдалиев Николай

@@ -5,7 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.entity.Image;
-
+/**
+ * Wrapper class for getting all the information about the user
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

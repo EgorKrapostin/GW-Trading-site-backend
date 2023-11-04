@@ -11,7 +11,9 @@ import ru.skypro.homework.service.ImageService;
 import javax.transaction.Transactional;
 import java.io.*;
 import java.util.UUID;
-
+/**
+ * A class with CRUD methods for the image
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

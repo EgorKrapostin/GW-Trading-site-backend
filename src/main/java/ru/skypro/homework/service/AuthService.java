@@ -6,7 +6,9 @@ import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.entity.User;
 
 import java.util.Optional;
-
+/**
+ * Interface with methods registration, authorization of password changes
+ */
 public interface AuthService {
     boolean login(String userName, String password);
 

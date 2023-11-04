@@ -12,7 +12,9 @@ import ru.skypro.homework.dto.authdto.Role;
 
 import javax.persistence.*;
 import java.util.*;
-
+/**
+ * class-entity for creating a user
+ */
 @Getter
 @Setter
 @NoArgsConstructor

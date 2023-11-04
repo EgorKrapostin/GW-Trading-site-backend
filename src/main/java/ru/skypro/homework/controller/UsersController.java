@@ -11,7 +11,9 @@ import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.ImageService;
 import ru.skypro.homework.service.UserService;
-
+/**
+ * The method for updating password for registered users with checking input data
+ */
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequestMapping("/users")

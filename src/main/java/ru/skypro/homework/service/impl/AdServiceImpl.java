@@ -22,7 +22,9 @@ import ru.skypro.homework.service.mapper.AdMapper;
 import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
+/**
+ * A class with crud methods for the declaration and its image
+ */
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -61,7 +63,6 @@ public class AdServiceImpl implements AdService {
             return true;
         }
         throw new AdNotFoundException();
-        //  throw new NotFornidden(); дописать ошибку
     }
 
     @Override
@@ -74,7 +75,6 @@ public class AdServiceImpl implements AdService {
             adRepository.save(ad);
             return adMapper.mapAdToAdDto(ad);
         }
-        //тут нужен эксэпшн
         throw new AdNotFoundException();
     }
 

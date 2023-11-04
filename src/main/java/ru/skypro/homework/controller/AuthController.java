@@ -14,7 +14,9 @@ import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.service.AuthService;
 
 import static ru.skypro.homework.dto.authdto.Role.USER;
-
+/**
+ * The class-controller for running endpoints for registration and authentication users
+ */
 @Slf4j
 @CrossOrigin(value = "http://localhost:3000")
 @RestController

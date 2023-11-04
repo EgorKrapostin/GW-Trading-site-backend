@@ -19,7 +19,9 @@ import ru.skypro.homework.service.mapper.CommentMapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * A class with CRUD methods for comment
+ */
 
 @Service
 @RequiredArgsConstructor

@@ -5,7 +5,9 @@ import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
 import ru.skypro.homework.dto.ads.FullAdsDto;
 import ru.skypro.homework.dto.ads.ResponseWrapperAdsDto;
-
+/**
+ * Interface with CRUD methods for declaring
+ */
 
 public interface AdService {
     ResponseWrapperAdsDto getAllAdsDto();

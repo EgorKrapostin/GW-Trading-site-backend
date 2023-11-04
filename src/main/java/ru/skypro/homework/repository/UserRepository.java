@@ -8,7 +8,9 @@ import org.springframework.data.repository.query.Param;
 import ru.skypro.homework.entity.User;
 
 import java.util.Optional;
-
+/**
+ * Repository class for working with users through the database
+ */
 public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query(value = "SELECT * FROM user_auth " +

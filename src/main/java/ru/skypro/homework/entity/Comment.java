@@ -6,7 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+/**
+ * entity class for creating a comment
+ */
 @Data
 @Entity
 @Table(name = "comment")

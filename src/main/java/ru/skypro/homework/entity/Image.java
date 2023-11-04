@@ -6,7 +6,9 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+/**
+ * an entity class for creating an image for a user and an ad
+ */
 @Getter
 @Setter
 @NoArgsConstructor

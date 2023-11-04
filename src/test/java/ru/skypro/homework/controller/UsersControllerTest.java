@@ -100,7 +100,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void setPassword_status_NotValid() throws Exception {
+    public void updatePassword_status_NotValid() throws Exception {
         addToDb();
         JSONObject newPassword = new JSONObject();
         newPassword.put("currentPassword", "password");
@@ -113,7 +113,7 @@ public class UsersControllerTest {
     }
 
     @Test
-    public void setPassword_status_isUnauthorized() throws Exception {
+    public void updatePassword_status_isUnauthorized() throws Exception {
         addToDb();
         JSONObject newPassword = new JSONObject();
         newPassword.put("currentPassword", "newPassword");

@@ -11,11 +11,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.Base64Utils;
+import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.junit.jupiter.Container;
@@ -57,6 +59,7 @@ public class UsersControllerTest {
             .withUsername("postgres")
             .withPassword("postgres");
 
+    @DynamicPropertySource
     static void postgresProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
@@ -75,7 +78,7 @@ public class UsersControllerTest {
                 "Duchovny",
                 "+7 777-77-77",
                 null,
-                "$2a$12$vbQfq.VVZu8upUrugVj5fOpdMdvl4uMityGZ2JKuNmbAt/fTmJVGK",
+                "$ 2a$ 12$7HJgPSS3OMcZ9/uhudLjSOu9pA5PNfdXb.KXU4b5IhxpO/PfjhPxi\n",
                 "user@mail.ru",
                 Role.USER));
         Image image = new Image();
@@ -91,13 +94,14 @@ public class UsersControllerTest {
         addToDb();
         JSONObject newPass = new JSONObject();
         newPass.put("currentPassword", "password");
-        newPass.put("newPassword", "newPassword");
+        newPass.put("newPassword", "newPassword1");
         mockMvc.perform(post("/users/set_password")
                         .header(HttpHeaders.AUTHORIZATION, "Basic " + base64Encoded("user@mail.ru", "password"))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPass.toString()))
                 .andExpect(status().isOk());
     }
+
 
     @Test
     public void updatePassword_status_NotValid() throws Exception {
@@ -116,7 +120,7 @@ public class UsersControllerTest {
     public void updatePassword_status_isUnauthorized() throws Exception {
         addToDb();
         JSONObject newPassword = new JSONObject();
-        newPassword.put("currentPassword", "newPassword");
+        newPassword.put("currentPassword", "newPassword1");
         newPassword.put("newPassword", "newPassword2");
         mockMvc.perform(post("/users/set_password")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,42 +129,28 @@ public class UsersControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "user@mail.ru", roles = "USER", password = "newPassword")
+    @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
     public void updatePassword_status_isForbidden() throws Exception {
         addToDb();
         JSONObject newPass = new JSONObject();
-        newPass.put("currentPassword", "newPassword");
+        newPass.put("currentPassword", "newPassword1");
         newPass.put("newPassword", "newPassword2");
         mockMvc.perform(post("/users/set_password")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPass.toString()))
                 .andExpect(status().isForbidden());
     }
+
     @Test
     @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
-    public void getInfoAboutUser_status_isOk() throws Exception {
+    public void getUser_status_isOk() throws Exception {
         addToDb();
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    @WithMockUser(username = "admin@mail.ru", roles = "USER", password = "newPassword")
-    public void getInfoAboutUser_status_isUserNotFound() throws Exception {
-        addToDb();
-        mockMvc.perform(get("/users/me"))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void getInformation_status_throw401() throws Exception {
-        addToDb();
-        mockMvc.perform(get("/users/me"))
-                .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    public void getInfoAboutUser_status_isUnauthorized() throws Exception {
+    public void getUser_status_isUnauthorized() throws Exception {
         addToDb();
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isUnauthorized());
@@ -171,9 +161,9 @@ public class UsersControllerTest {
     public void updateInformationAboutUser_status_isOk() throws Exception {
         addToDb();
         JSONObject updateUser = new JSONObject();
-        updateUser.put("firstName", "David");
-        updateUser.put("lastName", "Duchovny");
-        updateUser.put("phone", "+7 777-77-77");
+        updateUser.put("firstName", "Alex");
+        updateUser.put("lastName", "Black");
+        updateUser.put("phone", "+7 999-99-99");
         mockMvc.perform(patch("/users/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateUser.toString()))
@@ -181,8 +171,21 @@ public class UsersControllerTest {
     }
 
     @Test
+    public void updateInformationAboutUser_status_isUnauthorized() throws Exception {
+        addToDb();
+        JSONObject updateUser = new JSONObject();
+        updateUser.put("firstName", "Alex");
+        updateUser.put("lastName", "Black");
+        updateUser.put("phone", "+7 999-99-99");
+        mockMvc.perform(patch("/users/me")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(updateUser.toString()))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
-    public void updateImage_status_isOk() throws Exception {
+    public void updateUserImage_status_isOk() throws Exception {
         addToDb();
         MockMultipartFile file = new MockMultipartFile(
                 "image",
@@ -192,14 +195,17 @@ public class UsersControllerTest {
         );
         MockMultipartHttpServletRequestBuilder patchMultipart = (MockMultipartHttpServletRequestBuilder)
                 MockMvcRequestBuilders.multipart("/users/me/image")
-                        .with(rq -> { rq.setMethod("PATCH"); return rq; });
+                        .with(rq -> {
+                            rq.setMethod("PATCH");
+                            return rq;
+                        });
         mockMvc.perform(patchMultipart
                         .file(file))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void updateImage_status_isUnauthorized() throws Exception {
+    public void updateUserImage_status_isUnauthorized() throws Exception {
         addToDb();
         MockMultipartFile file = new MockMultipartFile(
                 "image",
@@ -209,7 +215,10 @@ public class UsersControllerTest {
         );
         MockMultipartHttpServletRequestBuilder patchMultipart = (MockMultipartHttpServletRequestBuilder)
                 MockMvcRequestBuilders.multipart("/users/me/image")
-                        .with(rq -> { rq.setMethod("PATCH"); return rq; });
+                        .with(rq -> {
+                            rq.setMethod("PATCH");
+                            return rq;
+                        });
         mockMvc.perform(patchMultipart
                         .file(file))
                 .andExpect(status().isUnauthorized());

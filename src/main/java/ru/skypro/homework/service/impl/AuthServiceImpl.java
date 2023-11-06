@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(Register register, Role role) {
-        if (userRepository.findUserByEmail(register.getUsername()).isPresent()) {
+        if (userRepository.findByUsername(register.getEmail()).isPresent()) {
             return false;
         }
         User userReg = userMapper.mapToUser(register);
@@ -46,16 +46,16 @@ public class AuthServiceImpl implements AuthService {
         return true;
     }
 
-    @Override
+    /*@Override
     public void updatePassword(NewPassDto newPassDto) {
-        User user = userService.findAuthUser().orElseThrow(/*UserNotFoundException::new*/);
+        User user = userService.findAuthUser().orElseThrow(*//*UserNotFoundException::new*//*);
         boolean pass = encoder.matches(newPassDto.getCurrentPassword(), user.getPassword());
         if(pass){
            user.setPassword(encoder.encode(newPassDto.getNewPassword()));
            userRepository.save(user);
-        } /*else {
+        } *//*else {
             throw new AuthorizationException();
-        }*/
-    }
+        }*//*
+    }*/
 
 }

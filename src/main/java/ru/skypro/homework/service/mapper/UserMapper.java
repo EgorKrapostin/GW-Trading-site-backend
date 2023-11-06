@@ -15,7 +15,6 @@ public class UserMapper {
     public UserInfoDto fromUser(User users) {
 
         UserInfoDto userInfoDto = new UserInfoDto();
-        userInfoDto.setId(users.getId());
         userInfoDto.setEmail(users.getEmail());
         userInfoDto.setFirstName(users.getFirstName());
         userInfoDto.setLastName(users.getLastName());
@@ -42,13 +41,12 @@ public class UserMapper {
 
     public User mapToUser(Register register) {
         User mappedUser = new User();
-        mappedUser.setUsername(register.getUsername());
+        mappedUser.setEmail(register.getEmail());
         mappedUser.setPassword(register.getPassword());
         mappedUser.setFirstName(register.getFirstName());
         mappedUser.setLastName(register.getLastName());
         mappedUser.setPhone(register.getPhone());
         mappedUser.setRole(register.getRole());
-        mappedUser.setEmail(register.getUsername());
         return mappedUser;
     }
 }

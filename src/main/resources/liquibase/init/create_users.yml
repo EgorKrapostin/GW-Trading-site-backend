@@ -44,11 +44,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: username
-                  type: varchar(32)
-                  constraints:
-                    nullable: false
-              - column:
                   name: image_id
                   type: varchar(255)
                   constraints:

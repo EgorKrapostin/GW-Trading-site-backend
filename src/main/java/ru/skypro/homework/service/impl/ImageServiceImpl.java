@@ -33,25 +33,23 @@ public class ImageServiceImpl implements ImageService {
             throw new RuntimeException(e);
         }
         newImage.setId(UUID.randomUUID().toString());
-        return imageRepository.saveAndFlush(newImage);
+        return imageRepository.save(newImage);
     }
 
 
     @Override
     public Image updateImage(MultipartFile newImage, Image image) {
-
         try {
             byte[] bytes = newImage.getBytes();
             image.setBytes(bytes);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return imageRepository.saveAndFlush(image);
+        return imageRepository.save(image);
     }
     @Override
     public byte[] getImage(String id) {
         Image image = imageRepository.findById(id).orElseThrow();
-
         return image.getBytes();
     }
 

@@ -26,11 +26,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/users", "/users/*/image"
     };
 
-    private final UserService userService;
-
-    public WebSecurityConfig(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,13 +35,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.csrf()
+                .disable()
                 .authorizeHttpRequests((auth) ->
                         auth
                                 .mvcMatchers(AUTH_WHITELIST).permitAll()
-                                .mvcMatchers("/ads/**", "/users/**").authenticated()
+                                .mvcMatchers("/ads/**", "/users/**")
+                                .authenticated()
                 )
-                .cors().and().httpBasic(withDefaults());
+                .cors()
+                .and()
+                .httpBasic(withDefaults());
     }
 }

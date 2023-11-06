@@ -14,6 +14,6 @@ public interface AuthService {
 
     boolean register(Register register, Role role);
 
-    void updatePassword(NewPassDto newPassDto);
+    /*void updatePassword(NewPassDto newPassDto);*/
 
 }

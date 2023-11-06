@@ -2,6 +2,7 @@ package ru.skypro.homework.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skypro.homework.dto.userdto.ImageDto;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
 import ru.skypro.homework.dto.userdto.UserUpdateDto;
@@ -12,12 +13,11 @@ import java.util.Optional;
  * A class with CRUD methods for the user
  */
 public interface UserService {
-
-    UserInfoDto getInfoAboutUser();
-
-    UserInfoDto updateInfoAboutUser(UserInfoDto userInfoDto);
-
     Optional<User> findAuthUser();
-
-    void updateUserImage(MultipartFile image);
+    UserInfoDto getInfoAboutUser();
+    UserInfoDto updateInfoAboutUser(UserInfoDto userInfoDto);
+    ImageDto updateUserImage(MultipartFile image, String username);
+    void updateImage(MultipartFile image);
+    byte [] getImage (String id);
+    void updatePassword(NewPassDto newPassword, String username);
 }

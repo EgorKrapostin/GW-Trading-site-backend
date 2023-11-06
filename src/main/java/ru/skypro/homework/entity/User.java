@@ -1,7 +1,5 @@
 package ru.skypro.homework.entity;
 
-import lombok.Data;
-
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +22,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false, length = 32)
     private String email;
@@ -40,9 +38,6 @@ public class User implements UserDetails {
 
     @Column(nullable = false, length = 64)
     private String password;
-
-    @Column(nullable = false, length = 32)
-    private String username;
 
     @OneToOne
     @JoinColumn(name = "image_id")
@@ -66,6 +61,15 @@ public class User implements UserDetails {
     }
 
     @Override
+    public String getUsername() {
+        return null;
+    }
+
+    public String getEmail() {
+        return null;
+    }
+
+    @Override
     public boolean isAccountNonExpired() {
         return true;
     }
@@ -84,8 +88,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    public User(int id, String email, String firstName, String lastName, String phone, Image image, String password,
-                String username, Role role) {
+    public User(int id, String email, String firstName, String lastName, String phone, Image image, String password, Role role) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -93,13 +96,12 @@ public class User implements UserDetails {
         this.phone = phone;
         this.image = image;
         this.password = password;
-        this.username = username;
         this.role = role;
     }
 
-    public User(String password, String username, Role role) {
+    public User(String password, String email, Role role) {
         this.password = password;
-        this.username = username;
+        this.email = email;
         this.role = role;
     }
 }

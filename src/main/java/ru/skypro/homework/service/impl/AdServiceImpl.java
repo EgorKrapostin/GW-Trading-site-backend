@@ -20,7 +20,6 @@ import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.AdMapper;
 
 import java.util.Collection;
-import java.util.Optional;
 import java.util.stream.Collectors;
 /**
  * A class with crud methods for the declaration and its image
@@ -101,8 +100,8 @@ public class AdServiceImpl implements AdService {
         Role role = Role.ADMIN;
         Ad ad = adRepository.findById(id).orElseThrow();
         User user = userService.findAuthUser().orElseThrow();
-        String curName = user.getUsername();
-        return ad.getAuthor().getUsername().equals(curName)
+        String curName = user.getEmail();
+        return ad.getAuthor().getEmail().equals(curName)
                 || user.getAuthorities().contains(role);
     }
 }

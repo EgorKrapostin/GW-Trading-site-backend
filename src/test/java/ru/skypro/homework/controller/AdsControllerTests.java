@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
@@ -160,21 +161,6 @@ public class AdsControllerTests {
     }
 
     @Test
-    void createComment_whenAdmin_thenReturnComment() throws Exception {
-        User admin = initialData.addAdminToBase();
-        initialData.addUserToBase();
-        initialData.addAdsByUser();
-        int adId = initialData.addCommentByAd().getAd().getId();
-        JSONObject newComment = new JSONObject();
-        newComment.put("text", "ha-ha-ha");
-        mockMvc.perform(post("/ads/{id}/comments", adId)
-                        .with(user(admin))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(newComment.toString()))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void createComment_whenNonAuthorizedUser() throws Exception {
         initialData.addUserToBase();
         initialData.addAdsByUser();
@@ -222,14 +208,13 @@ public class AdsControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "user@mail.ru", roles = "Admin", password = "11111111")
     void deleteComment_whenAdmin() throws Exception {
         initialData.addUserToBase();
         initialData.addAdsByUser();
-        User admin = initialData.addAdminToBase();
         int adId = initialData.addCommentByAd().getAd().getId();
         int commentId = commentRepository.findFirstCommentId(adId);
-        mockMvc.perform(delete("/ads/{adId}/comments/{commentId}", adId, commentId)
-                        .with(user(admin)))
+        mockMvc.perform(delete("/ads/{adId}/comments/{commentId}", adId, commentId))
                 .andExpect(status().isOk());
     }
 
@@ -293,19 +278,21 @@ public class AdsControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "user@mail.ru", roles = "Admin", password = "11111111")
     void updateComment_whenAdmin_thenReturnUpdateComment() throws Exception {
-        User admin = initialData.addAdminToBase();
         initialData.addUserToBase();
         initialData.addAdsByUser();
         int adId = initialData.addCommentByAd().getAd().getId();
         int commentId = commentRepository.findFirstCommentId(adId);
         JSONObject updateComment = new JSONObject();
-        updateComment.put("text", "new worlds");
+        updateComment.put("text", "new worlds1");
         mockMvc.perform(patch("/ads/{adId}/comments/{commentId}", adId, commentId)
-                        .with(user(admin))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateComment.toString()))
-                .andExpect(status().isOk());
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.text").value("new worlds1")
+                );
     }
 
     @Test

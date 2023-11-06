@@ -19,7 +19,9 @@ import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
 
 import java.util.Optional;
-
+/**
+ * A class with CRUD methods for the user
+ */
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {

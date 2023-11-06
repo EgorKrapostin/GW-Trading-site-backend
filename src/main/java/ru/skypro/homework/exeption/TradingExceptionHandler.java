@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+/**
+ * A class for handling exceptions related to errors
+ */
 @RestControllerAdvice
 public class TradingExceptionHandler {
 

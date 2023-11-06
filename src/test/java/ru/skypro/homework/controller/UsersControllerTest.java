@@ -1,9 +1,11 @@
 package ru.skypro.homework.controller;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,15 +16,19 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.DynamicPropertyRegistry;
+
 import org.springframework.test.context.DynamicPropertySource;
+
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMultipartHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.util.Base64Utils;
 import org.testcontainers.containers.PostgreSQLContainer;
+
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+
 import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
@@ -55,6 +61,7 @@ public class UsersControllerTest {
     @Autowired
     private AuthService authService;
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -64,11 +71,13 @@ public class UsersControllerTest {
             .withPassword("postgres");
 
     @DynamicPropertySource
+
     static void postgresProperties(DynamicPropertyRegistry registry) {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
     }
+
 
     private String passEncoder(String login, String password) {
         return Base64Utils.encodeToString((login + ":" + password).getBytes(StandardCharsets.UTF_8));
@@ -86,10 +95,12 @@ public class UsersControllerTest {
         Image image = new Image();
         image.setBytes(Files.readAllBytes(Paths.get("user-avatar.png")));
         image.setId(user.getId().toString());
+
         imageRepository.save(image);
         user.setImage(image);
         userRepository.save(user);
     }
+
 
     @AfterEach
     void cleanDb() {
@@ -104,16 +115,19 @@ public class UsersControllerTest {
         newPass.put("newPassword", "newPassword1");
         mockMvc.perform(post("/users/set_password")
                         .header(HttpHeaders.AUTHORIZATION, "Basic " + passEncoder("user@mail.ru", "password"))
+
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPass.toString()))
                 .andExpect(status().isOk());
     }
 
     @Test
+
     public void updatePassword_status_isUnauthorized() throws Exception {
 
         JSONObject newPassword = new JSONObject();
         newPassword.put("currentPassword", "newPassword1");
+
         newPassword.put("newPassword", "newPassword2");
         mockMvc.perform(post("/users/set_password")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,12 +139,15 @@ public class UsersControllerTest {
     @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
     public void getUser_status_isOk() throws Exception {
 
+
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isOk());
     }
 
     @Test
+
     public void getUser_status_isUnauthorized() throws Exception {
+
 
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isUnauthorized());
@@ -144,6 +161,7 @@ public class UsersControllerTest {
         updateUser.put("firstName", "Alex");
         updateUser.put("lastName", "Black");
         updateUser.put("phone", "+7 999-99-99");
+
         mockMvc.perform(patch("/users/me")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(updateUser.toString()))
@@ -151,6 +169,7 @@ public class UsersControllerTest {
     }
 
     @Test
+
     public void updateInformationAboutUser_status_isUnauthorized() throws Exception {
 
         JSONObject updateUser = new JSONObject();
@@ -167,6 +186,7 @@ public class UsersControllerTest {
     @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
     public void updateUserImage_status_isOk() throws Exception {
 
+
         MockMultipartFile file = new MockMultipartFile(
                 "image",
                 "image.png",
@@ -179,6 +199,7 @@ public class UsersControllerTest {
                             rq.setMethod("PATCH");
                             return rq;
                         });
+
         mockMvc.perform(patchMultipart
                         .file(file))
                 .andExpect(status().isOk());
@@ -198,4 +219,5 @@ public class UsersControllerTest {
         assertThat(resourceContent).isEmpty();
     }
 }
+
 

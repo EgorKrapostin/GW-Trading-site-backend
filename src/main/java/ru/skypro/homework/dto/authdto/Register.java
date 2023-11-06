@@ -1,7 +1,9 @@
 package ru.skypro.homework.dto.authdto;
 
 import lombok.Data;
-
+/**
+ * Wrapper class for registration
+ */
 @Data
 public class Register {
 

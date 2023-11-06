@@ -10,7 +10,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.skypro.homework.service.UserService;
 
 import static org.springframework.security.config.Customizer.withDefaults;
-
+/**
+ *Spring Security module configuration class
+ */
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

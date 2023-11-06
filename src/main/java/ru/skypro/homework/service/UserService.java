@@ -8,7 +8,9 @@ import ru.skypro.homework.dto.userdto.UserUpdateDto;
 import ru.skypro.homework.entity.User;
 
 import java.util.Optional;
-
+/**
+ * A class with CRUD methods for the user
+ */
 public interface UserService {
 
     UserInfoDto getInfoAboutUser();

@@ -6,13 +6,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.authdto.Register;
 import ru.skypro.homework.dto.authdto.Role;
-import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.entity.User;
-import ru.skypro.homework.exeption.AuthorizationException;
-import ru.skypro.homework.exeption.UserNotFoundException;
 import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
-import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
 /**
  * class for registration, authorization of password changes
@@ -36,7 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(Register register, Role role) {
-        if (userRepository.findByUsername(register.getEmail()).isPresent()) {
+        if (userRepository.findUserByEmail(register.getEmail()).isPresent()) {
             return false;
         }
         User userReg = userMapper.mapToUser(register);

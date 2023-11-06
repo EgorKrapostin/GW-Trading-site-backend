@@ -1,7 +1,5 @@
 package ru.skypro.homework.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -17,12 +15,9 @@ import java.util.Optional;
 public interface UserRepository extends CrudRepository<User, Integer> {
 
     /*@Query(value = "SELECT * FROM user_auth " +
-            "WHERE username = :username",
+            "WHERE email = :email",
             nativeQuery = true)
-    Optional<User> findUs(@Param("username") String username);*/
-    /*@Query(value = "SELECT * FROM user_auth " +
-            "WHERE username = :username",
-            nativeQuery = true)*/
-    Optional<User> findByUsername(String username);
+    Optional<User> findUserByEmail(@Param("email") String email);*/
+    Optional<User> findUserByEmail(String username);
 
 }

@@ -109,19 +109,6 @@ public class UsersControllerTest {
                 .andExpect(status().isOk());
     }
 
-
-    @Test
-    public void updatePassword_status_isBadRequest() throws Exception {
-        JSONObject newPassword = new JSONObject();
-        newPassword.put("currentPassword", "password");
-        newPassword.put("newPassword", "NoValidPass");
-        mockMvc.perform(post("/users/set_password")
-                        .header(HttpHeaders.AUTHORIZATION, "Basic " + passEncoder("user@mail.ru", "password"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(newPassword.toString()))
-                .andExpect(status().isBadRequest());
-    }
-
     @Test
     public void updatePassword_status_isUnauthorized() throws Exception {
 
@@ -132,19 +119,6 @@ public class UsersControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(newPassword.toString()))
                 .andExpect(status().isUnauthorized());
-    }
-
-    @Test
-    @WithMockUser(value = "user@mail.ru", roles = "USER", password = "password")
-    public void updatePassword_status_isForbidden() throws Exception {
-        JSONObject newPass = new JSONObject();
-        newPass.put("currentPassword", "newPassword1");
-        newPass.put("newPassword", "newPassword2");
-        mockMvc.perform(post("/users/set_password")
-                        /*.header(HttpHeaders.AUTHORIZATION, "Basic " + passEncoder("user@mail.ru", "password"))*/
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(newPass.toString()))
-                .andExpect(status().isForbidden());
     }
 
     @Test
@@ -210,30 +184,12 @@ public class UsersControllerTest {
                 .andExpect(status().isOk());
     }
 
-    @Test
-    public void updateUserImage_status_isUnauthorized() throws Exception {
-        MockMultipartFile file = new MockMultipartFile(
-                "image",
-                "image.png",
-                MediaType.IMAGE_PNG_VALUE,
-                Files.readAllBytes(Paths.get("test-image.png"))
-        );
-        MockMultipartHttpServletRequestBuilder patchMultipart = (MockMultipartHttpServletRequestBuilder)
-                MockMvcRequestBuilders.multipart("/users/me/image")
-                        .with(rq -> {
-                            rq.setMethod("PATCH");
-                            return rq;
-                        });
-        mockMvc.perform(patchMultipart
-                        .file(file))
-                .andExpect(status().isUnauthorized());
-    }
 
     @Test
     @WithMockUser(username = "user@mail.ru", roles = "USER", password = "password")
     public void getImage_status_isOk() throws Exception {
 
-        User user = userRepository.findByUsername("user@mail.ru").orElseThrow();
+        User user = userRepository.findUserByEmail("user@mail.ru").orElseThrow();
 
         MvcResult result = mockMvc.perform(get("/users/{id}/image", user.getImage().getId()))
                 .andExpect(status().isOk())

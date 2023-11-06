@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dto.userdto.ImageDto;
 import ru.skypro.homework.dto.userdto.NewPassDto;
 import ru.skypro.homework.dto.userdto.UserInfoDto;
-import ru.skypro.homework.dto.userdto.UserUpdateDto;
 import ru.skypro.homework.entity.Image;
 import ru.skypro.homework.entity.User;
 import ru.skypro.homework.exeption.IncorrectCurrentPasswordException;
@@ -47,7 +46,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public Optional<User> findAuthUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        return userRepository.findByUsername(currentPrincipalName);
+        return userRepository.findUserByEmail(currentPrincipalName);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
     @Override
     public ImageDto updateUserImage(MultipartFile file, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findUserByEmail(username).orElseThrow(UserNotFoundException::new);
         Image image;
         if (!Objects.isNull(user.getImage())) {
             image = imageRepository.findById(user.getImage().getId()).orElse(new Image());
@@ -117,13 +116,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByUsername(username).orElseThrow(() ->
+        return userRepository.findUserByEmail(username).orElseThrow(() ->
                 new UsernameNotFoundException("User with username " + username + " doesn't exists"));
     }
 
     @Override
     public void updatePassword(NewPassDto newPassword, String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findUserByEmail(username).orElseThrow(UserNotFoundException::new);
         if (passwordEncoder.matches(newPassword.getCurrentPassword(), user.getPassword())) {
             user.setPassword(passwordEncoder.encode(newPassword.getNewPassword()));
             userRepository.save(user);

@@ -91,10 +91,11 @@ public class UsersControllerTest {
                 "+7 777-77-77",
                 null,
                 "$2a$12$8lTZ/silBE6jnRqlxIqxb.WYSgc0Lo2aT3vPHTNVXFUyOD8N5V1la",
+                "user@mail.ru",
                 Role.USER));
         Image image = new Image();
         image.setBytes(Files.readAllBytes(Paths.get("user-avatar.png")));
-        image.setId(user.getId().toString());
+        image.setId(user.getEmail());
 
         imageRepository.save(image);
         user.setImage(image);

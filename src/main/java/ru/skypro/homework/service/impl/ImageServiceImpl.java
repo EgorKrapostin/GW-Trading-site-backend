@@ -21,8 +21,9 @@ import java.util.UUID;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
-
-
+    /**
+     * Method for creating and saving an image
+     */
     @Override
     public Image createImage(MultipartFile image) {
         Image newImage = new Image();
@@ -35,8 +36,9 @@ public class ImageServiceImpl implements ImageService {
         newImage.setId(UUID.randomUUID().toString());
         return imageRepository.saveAndFlush(newImage);
     }
-
-
+    /**
+     * Method for changing and saving an image
+     */
     @Override
     public Image updateImage(MultipartFile newImage, Image image) {
 
@@ -48,6 +50,9 @@ public class ImageServiceImpl implements ImageService {
         }
         return imageRepository.saveAndFlush(image);
     }
+    /**
+     * Method for getting an image in bytes
+     */
     @Override
     public byte[] getImage(String id) {
         Image image = imageRepository.findById(id).orElseThrow();

@@ -31,7 +31,9 @@ public class CommentServiceImpl implements CommentService {
     private final AdRepository adRepository;
     private final UserService userService;
     private final AdServiceImpl adService;
-
+    /**
+     * Method for getting comments
+     */
     @Override
     public CommentsDTO getComments(int adId) {
         List<CommentDTO> comments = commentRepository.getCommentsByAd_Id(adId)
@@ -40,7 +42,9 @@ public class CommentServiceImpl implements CommentService {
                 .collect(Collectors.toList());
         return commentMapper.commentsToListDTO(comments);
     }
-
+    /**
+     * Method for adding a comment
+     */
     @Override
     public CommentDTO addComment(int adId, CreateOrUpdateCommentDTO comment) {
         Ad ad = adRepository.findById(adId).orElseThrow(AdNotFoundException::new);
@@ -52,7 +56,9 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.save(newComment);
         return commentMapper.commentToDTO(newComment);
     }
-
+    /**
+     * Method for delete a comment
+     */
     @Override
     public void deleteComment(int adId, int commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow();
@@ -66,7 +72,9 @@ public class CommentServiceImpl implements CommentService {
             }
         }
     }
-
+    /**
+     * Method for changing a comment
+     */
     @Override
     public CommentDTO updateComment(int adId, int commentId, CreateOrUpdateCommentDTO comment) {
         Comment updateComment = commentRepository.findById(commentId).orElseThrow();

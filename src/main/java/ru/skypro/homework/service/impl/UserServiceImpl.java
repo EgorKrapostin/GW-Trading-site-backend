@@ -27,19 +27,20 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
     private final ImageService imageService;
-
-
-
+    /**
+     * Method for checking the user for authorization
+     */
     @Override
     public Optional<User> findAuthUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
         return userRepository.findUserByEmail(currentPrincipalName);
     }
-
+    /**
+     * Method for changing the user's avatar
+     */
     @Override
     public void updateUserImage(MultipartFile image) {
         User user = findAuthUser().orElseThrow();
@@ -53,7 +54,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         userRepository.save(user);
     }
-
+    /**
+     * Method for getting user information
+     */
     @Override
     public UserInfoDto getInfoAboutUser() {
         Optional<User> currentUser = findAuthUser();
@@ -63,7 +66,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
         return currentUserDto;
     }
-
+    /**
+     * Method for changing user information
+     */
     @Override
     public UserInfoDto updateInfoAboutUser(UserInfoDto userInfoDto) {
         Optional<User> currentUser = findAuthUser();
@@ -78,8 +83,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return userMapper.fromUser(user);
     }
-
-
+    /**
+     * Method for checking the user for registration
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findUserByEmail(username).orElseThrow(() ->

@@ -33,13 +33,17 @@ public class AdServiceImpl implements AdService {
     private final UserService userService;
     private final AdRepository adRepository;
     private final ImageService imageService;
-
+    /**
+     * Method for getting a list of all ads
+     */
     @Override
     public ResponseWrapperAdsDto getAllAdsDto() {
         Collection<AdsDto> adsAll = adMapper.mapAdListToAdDtoList(adRepository.findAll());
         return new ResponseWrapperAdsDto(adsAll);
     }
-
+    /**
+     * Method for creating an ad
+     */
     @Override
     public AdsDto createAds(CreateAdsDto adDto, MultipartFile image) {
         Ad newAd = adMapper.mapCreatedAdsDtoToAd(adDto);
@@ -49,13 +53,17 @@ public class AdServiceImpl implements AdService {
         adRepository.save(newAd);
         return adMapper.mapAdToAdDto(newAd);
     }
-
+    /**
+     * Method for getting the ad
+     */
     @Override
     public FullAdsDto getFullAdDto(Integer id) {
         Ad ad = adRepository.findById(id).orElseThrow();
         return adMapper.mapAdToFullAdsDTo(ad);
     }
-
+    /**
+     * Method for deleting an ad by ID
+     */
     @Override
     public boolean removeAdDto(Integer id) {
         if (checkAccess(id)) {
@@ -64,7 +72,9 @@ public class AdServiceImpl implements AdService {
         }
         throw new AdNotFoundException();
     }
-
+    /**
+     * Method for changing the ad by ID
+     */
     @Override
     public AdsDto updateAdDto(Integer id, CreateAdsDto createAdsDto) {
         Ad ad = adRepository.findById(id).orElseThrow();
@@ -77,7 +87,9 @@ public class AdServiceImpl implements AdService {
         }
         throw new AdNotFoundException();
     }
-
+    /**
+     * Method for getting all the user's ads
+     */
     @Override
     public ResponseWrapperAdsDto getAllUserAdsDto() {
         User user = userService.findAuthUser().orElseThrow();
@@ -87,7 +99,9 @@ public class AdServiceImpl implements AdService {
                 .collect(Collectors.toList());
         return new ResponseWrapperAdsDto(adMapper.mapAdListToAdDtoList(userAds));
     }
-
+    /**
+     * Method for changing the ad image
+     */
     @Override
     public void updateImageAdDto(Integer id, MultipartFile image) {
         Ad ad = adRepository.findById(id).orElseThrow();
@@ -95,7 +109,9 @@ public class AdServiceImpl implements AdService {
         ad.setImage(updImage);
         adRepository.save(ad);
     }
-
+    /**
+     * Method for checking access by the administrator
+     */
     @Override
     public boolean checkAccess(Integer id) {
         Role role = Role.ADMIN;

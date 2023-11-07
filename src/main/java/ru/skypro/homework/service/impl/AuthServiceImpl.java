@@ -14,6 +14,7 @@ import ru.skypro.homework.repository.UserRepository;
 import ru.skypro.homework.service.AuthService;
 import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.UserMapper;
+
 /**
  * class for registration, authorization of password changes
  */
@@ -26,7 +27,9 @@ public class AuthServiceImpl implements AuthService {
     private final UserMapper userMapper;
     private final UserServiceImpl userService;
 
-
+    /**
+     * Method for creating a password
+     */
     @Override
     public boolean login(String userName, String password) {
         UserDetails userDetails = manager.loadUserByUsername(userName);
@@ -34,6 +37,9 @@ public class AuthServiceImpl implements AuthService {
         return encoder.matches(password, encriptedPass);
     }
 
+    /**
+     * Method for user registration with profile selection and password creation
+     */
     @Override
     public boolean register(Register register, Role role) {
         if (userRepository.findUserByEmail(register.getUsername()).isPresent()) {
@@ -45,14 +51,16 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(userReg);
         return true;
     }
-
+    /**
+     * Method for changing the password
+     */
     @Override
     public void updatePassword(NewPassDto newPassDto) {
         User user = userService.findAuthUser().orElseThrow(/*UserNotFoundException::new*/);
         boolean pass = encoder.matches(newPassDto.getCurrentPassword(), user.getPassword());
-        if(pass){
-           user.setPassword(encoder.encode(newPassDto.getNewPassword()));
-           userRepository.save(user);
+        if (pass) {
+            user.setPassword(encoder.encode(newPassDto.getNewPassword()));
+            userRepository.save(user);
         } /*else {
             throw new AuthorizationException();
         }*/

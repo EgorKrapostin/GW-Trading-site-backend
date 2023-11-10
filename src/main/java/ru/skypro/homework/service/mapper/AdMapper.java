@@ -1,6 +1,7 @@
 package ru.skypro.homework.service.mapper;
 
 import org.springframework.stereotype.Component;
+
 import ru.skypro.homework.dto.ads.AdsDto;
 import ru.skypro.homework.dto.ads.CreateAdsDto;
 import ru.skypro.homework.dto.ads.FullAdsDto;
@@ -9,7 +10,9 @@ import ru.skypro.homework.entity.Ad;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
+/**
+ * A class for converting an ad-entity to dto and back
+ */
 @Component
 public class AdMapper {
 

@@ -1,5 +1,14 @@
 package ru.skypro.homework.dto.authdto;
 
-public enum Role {
-    USER, ADMIN
+import org.springframework.security.core.GrantedAuthority;
+/**
+ * A class for selecting a user role
+ */
+public enum Role implements GrantedAuthority {
+    USER, ADMIN;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

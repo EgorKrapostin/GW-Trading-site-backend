@@ -1,11 +1,16 @@
 package ru.skypro.homework.dto.userdto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skypro.homework.dto.authdto.Role;
 import ru.skypro.homework.entity.Image;
-import ru.skypro.homework.entity.Users;
-
+/**
+ * Wrapper class for getting all the information about the user
+ */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserInfoDto {
 
     private int id;
@@ -18,8 +23,8 @@ public class UserInfoDto {
 
     private String phone;
 
-    private Role role;
+    private String image;
 
-    private Image image;
+    private Role role;
 
 }

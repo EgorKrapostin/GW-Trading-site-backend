@@ -3,21 +3,27 @@ package ru.skypro.homework.entity;
 import lombok.Data;
 
 
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import ru.skypro.homework.dto.authdto.Role;
 
 import javax.persistence.*;
 import java.util.*;
-
-@Data
-@Entity
-@Table(name = "userAuth")
-
+/**
+ * class-entity for creating a user
+ */
+@Getter
+@Setter
 @NoArgsConstructor
-public class Users {
+@Entity
+@Table(name = "user_auth")
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
+    @Column(name = "user_id", nullable = false)
     private int id;
 
     @Column(nullable = false, length = 32)
@@ -52,8 +58,34 @@ public class Users {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Comment> commentsList = new ArrayList<>();
 
-    public Users(int id, String email, String firstName, String lastName, String phone, Image image, String password,
-                 String username, Role role) {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<Role> roles = new HashSet<>();
+        roles.add(this.role);
+        return roles;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    public User(int id, String email, String firstName, String lastName, String phone, Image image, String password,
+                String username, Role role) {
         this.id = id;
         this.email = email;
         this.firstName = firstName;
@@ -65,7 +97,7 @@ public class Users {
         this.role = role;
     }
 
-    public Users(String password, String username, Role role) {
+    public User(String password, String username, Role role) {
         this.password = password;
         this.username = username;
         this.role = role;

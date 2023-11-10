@@ -1,5 +1,4 @@
-package ru.skypro.homework.filter;
-
+package ru.skypro.homework.config;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -13,12 +12,11 @@ import java.io.IOException;
  * The filter class for adding headers for all response in app
  */
 @Component
-public class BasicAuthCorsFilter extends OncePerRequestFilter {
-
+public class AuthFilter extends OncePerRequestFilter {
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest,
-                                    HttpServletResponse httpServletResponse,
-                                    FilterChain filterChain)
+    public void doFilterInternal(HttpServletRequest httpServletRequest,
+                                 HttpServletResponse httpServletResponse,
+                                 FilterChain filterChain)
             throws ServletException, IOException {
         httpServletResponse.addHeader("Access-Control-Allow-Credentials", "true");
         filterChain.doFilter(httpServletRequest, httpServletResponse);

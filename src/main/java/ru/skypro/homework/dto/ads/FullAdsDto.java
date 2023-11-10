@@ -1,7 +1,9 @@
 package ru.skypro.homework.dto.ads;
 
 import lombok.Data;
-
+/**
+ * Wrapper class for getting the full declaration
+ */
 @Data
 public class FullAdsDto {
     private int pk;

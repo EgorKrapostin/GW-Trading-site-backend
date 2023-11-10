@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.io.IOException;
 import java.sql.SQLException;
-
+/**
+ * A class for handling exceptions related to errors
+ */
 @RestControllerAdvice
 public class TradingExceptionHandler {
 
@@ -23,11 +25,13 @@ public class TradingExceptionHandler {
     }
     @ExceptionHandler(value = {AuthorizationException.class})
     public ResponseEntity<?> handleAuthorizationException() {
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        String message = "Необходима авторизация";
+        return new ResponseEntity<>(message,HttpStatus.UNAUTHORIZED);
     }
     @ExceptionHandler(value = {ForbiddenException.class})
     public ResponseEntity<?> handleForbiddenException() {
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        String message = "Нет прав на это действие";
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler
@@ -35,10 +39,4 @@ public class TradingExceptionHandler {
         String message = "Внутренняя ошибка сервера";
         return new ResponseEntity<>(message, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-//    @ExceptionHandler
-//    public ResponseEntity<?> handleException(Exception exception) {
-//        String message = "Неверный запрос пользователя";
-//        return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
-//    }
 }

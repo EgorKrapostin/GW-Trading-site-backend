@@ -9,15 +9,19 @@ import ru.skypro.homework.entity.Ad;
 import ru.skypro.homework.entity.Comment;
 import ru.skypro.homework.exeption.AdNotFoundException;
 import ru.skypro.homework.exeption.CommentNotFoundException;
+import ru.skypro.homework.exeption.ForbiddenException;
 import ru.skypro.homework.repository.AdRepository;
 import ru.skypro.homework.repository.CommentRepository;
 import ru.skypro.homework.service.CommentService;
+import ru.skypro.homework.service.UserService;
 import ru.skypro.homework.service.mapper.CommentMapper;
 
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * A class with CRUD methods for comment
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -25,49 +29,65 @@ public class CommentServiceImpl implements CommentService {
     private final CommentMapper commentMapper;
     private final CommentRepository commentRepository;
     private final AdRepository adRepository;
-
+    private final UserService userService;
+    private final AdServiceImpl adService;
+    /**
+     * Method for getting comments
+     */
     @Override
-    public CommentsDTO getComments(int id) {
-        List<CommentDTO> comments = commentRepository.getCommentsByAd_Id(id)
+    public CommentsDTO getComments(int adId) {
+        List<CommentDTO> comments = commentRepository.getCommentsByAd_Id(adId)
                 .stream()
                 .map(commentMapper::commentToDTO)
                 .collect(Collectors.toList());
-        if (comments.isEmpty())
-            throw new CommentNotFoundException();
-        else
-            return commentMapper.commentsToListDTO(comments);
+        return commentMapper.commentsToListDTO(comments);
     }
-
+    /**
+     * Method for adding a comment
+     */
     @Override
-    public CommentDTO addComment(int id, CreateOrUpdateCommentDTO comment) {
-        Ad ad = adRepository.findById(id).orElseThrow(AdNotFoundException::new);
+    public CommentDTO addComment(int adId, CreateOrUpdateCommentDTO comment) {
+        Ad ad = adRepository.findById(adId).orElseThrow(AdNotFoundException::new);
         Comment newComment = new Comment();
-        newComment.setAuthor(ad.getAuthor());
+        newComment.setAuthor(userService.findAuthUser().orElseThrow(ForbiddenException::new));
         newComment.setAd(ad);
         newComment.setCreatedAt(newComment.getCreatedAt());
         newComment.setText(comment.getText());
         commentRepository.save(newComment);
         return commentMapper.commentToDTO(newComment);
     }
-
+    /**
+     * Method for delete a comment
+     */
     @Override
     public void deleteComment(int adId, int commentId) {
-        if (commentId > getComments(adId).getResults().size()
-                || commentId <= 0) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow();
+        if (adId != (comment.getAd().getId())) {
             throw new CommentNotFoundException();
+        } else {
+            if (adService.checkAccess(adId)) {
+                commentRepository.delete(comment);
+            } else {
+                throw new ForbiddenException();
+            }
         }
-        commentRepository.deleteById(commentId);
     }
-
-
+    /**
+     * Method for changing a comment
+     */
     @Override
     public CommentDTO updateComment(int adId, int commentId, CreateOrUpdateCommentDTO comment) {
-        if (commentId > getComments(adId).getResults().size() || commentId <= 0) {
+        Comment updateComment = commentRepository.findById(commentId).orElseThrow();
+        if (adId != (updateComment.getAd().getId())) {
             throw new CommentNotFoundException();
+        } else {
+            if (adService.checkAccess(adId)) {
+                updateComment.setText(comment.getText());
+                commentRepository.save(updateComment);
+                return commentMapper.commentToDTO(updateComment);
+            } else {
+                throw new ForbiddenException();
+            }
         }
-        Comment updateComment=commentRepository.findById(commentId).orElseThrow();
-        updateComment.setText(comment.getText());
-        commentRepository.save(updateComment);
-        return commentMapper.commentToDTO(updateComment);
     }
 }

@@ -7,13 +7,17 @@ import ru.skypro.homework.entity.Comment;
 
 import java.util.Date;
 import java.util.List;
-
+import java.util.Optional;
+/**
+ * A class for converting a comment-entity to dto and back
+ */
 @Component
 public class CommentMapper {
     public CommentDTO commentToDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setAuthor(comment.getAuthor().getId());
-        commentDTO.setAuthorImage(comment.getAuthor().getImage().getId());
+        Optional.ofNullable(comment.getAuthor().getImage()).ifPresent(image -> commentDTO.setAuthorImage(
+                "/users/" + comment.getAuthor().getImage().getId() + "/image"));
         commentDTO.setAuthorFirstName(comment.getAuthor().getFirstName());
         commentDTO.setCreatedAt(comment.getCreatedAt());
         commentDTO.setPk(comment.getId());
